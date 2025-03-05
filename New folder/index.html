@@ -4,213 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HIRWA AI</title>
-    
-    <!-- Favicon -->
     <link rel="icon" href="https://i.postimg.cc/HcVy4k74/Screenshot-2025-02-02-163931.png" type="image/png">
-
-    <!-- Meta Tags -->
-    <meta name="description" content="Hirwa AI is here to assist you with all your digital needs. Experience a smarter way of solving problems.">
-    <meta property="og:title" content="Hirwa AI">
-    <meta property="og:description" content="Hirwa AI is here to assist you with all your digital needs.">
-    <meta property="og:image" content="images/Screenshot 2025-02-02 163931.png">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Hirwa AI">
-    
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
-    
     <style>
-        /* Global Styles */
-        body {
-            background: linear-gradient(to bottom, #0a1f44, #04122b);
-            color: white;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #030a1a;
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             text-align: center;
-            overflow: hidden;
-            margin: 0;
         }
 
-        /* Loading Text */
-        .text-container {
-            font-size: 3rem;
-            border-right: 3px solid white;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: blink 0.6s step-end infinite;
-        }
-
-        @keyframes blink {
-            50% {
-                border-color: transparent;
-            }
-        }
-
-        /* Chatbot */
         .chat-container {
-            width: 380px;
+            width: 360px;
             background: #101c40;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 20px;
-            position: absolute;
-            transform: translateY(-50%);
-            top: 50%;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            display: none;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .chat-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ffffff20;
+            justify-content: center;
         }
 
         .chat-header img {
             width: 50px;
             border-radius: 50%;
+            margin-right: 10px;
         }
 
         .chat-body {
-            padding: 20px 0;
-            max-height: 300px;
+            max-height: 250px;
             overflow-y: auto;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .chat-body p {
+            background: #1b2b5b;
+            padding: 10px;
+            border-radius: 5px;
+            width: fit-content;
+            max-width: 80%;
         }
 
         .chat-footer {
-            padding-top: 10px;
-            border-top: 1px solid #ffffff20;
+            display: flex;
+            gap: 10px;
         }
 
         .message-input {
-            width: 100%;
+            flex: 1;
             padding: 10px;
             border-radius: 5px;
             border: none;
             outline: none;
-            font-size: 1rem;
             background: #1b2b5b;
             color: white;
         }
 
         .send-btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
             background: #17b978;
             border: none;
+            padding: 10px;
             border-radius: 5px;
-            font-size: 1rem;
             color: white;
             cursor: pointer;
-        }
-        
-        /* Modal Advertisement */
-        .ad-container {
-            width: 340px;
-            background: #111;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            position: absolute;
-            display: none;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            transition: 0.3s;
         }
 
-        .close-ad {
-            background: red;
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
-            cursor: pointer;
+        .send-btn:hover {
+            background: #14a16b;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- Loading Text -->
-    <div class="text-container" id="loading-text"><span></span></div>
-
-    <!-- Chatbot -->
-    <div class="chat-container" id="chatbot">
+    <div class="chat-container">
         <div class="chat-header">
             <img src="https://i.postimg.cc/HcVy4k74/Screenshot-2025-02-02-163931.png" alt="Hirwa AI">
             <h2>Hirwa AI</h2>
         </div>
         <div class="chat-body">
-            <p>Welcome to Hirwa AI! How can I assist you today?</p>
+            <p>👋 Welcome to Hirwa AI! How can I assist you today?</p>
         </div>
         <div class="chat-footer">
-            <input type="text" class="message-input" placeholder="Message Hirwa AI">
+            <input type="text" class="message-input" placeholder="Type your message...">
             <button class="send-btn">Send</button>
         </div>
     </div>
 
-    <!-- Modal Advertisement -->
-    <div class="ad-container" id="ad-container">
-        <h2>Welcome Back!</h2>
-        <p>Enjoy using Hirwa AI.</p>
-        <button class="close-ad" id="close-ad">Close</button>
-    </div>
-
-    <!-- Scripts -->
     <script>
-        // Typing Animation
-        const words = ["Hirwa AI"];
-        let textElement = document.getElementById("loading-text");
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+        const chatBody = document.querySelector('.chat-body');
+        const inputField = document.querySelector('.message-input');
+        const sendBtn = document.querySelector('.send-btn');
 
-        function typeEffect() {
-            const currentWord = words[wordIndex];
-            const displayText = isDeleting ? currentWord.substring(0, charIndex--) : currentWord.substring(0, charIndex++);
-            textElement.textContent = displayText;
-            let delay = isDeleting ? 50 : 100;
-            if (!isDeleting && charIndex === currentWord.length) {
-                delay = 1000;
-                isDeleting = true;
+        function sendMessage() {
+            let userText = inputField.value.trim();
+            if (userText !== "") {
+                let userMessage = document.createElement("p");
+                userMessage.textContent = userText;
+                userMessage.style.alignSelf = "flex-end";
+                userMessage.style.background = "#17b978";
+                chatBody.appendChild(userMessage);
+                inputField.value = "";
+                chatBody.scrollTop = chatBody.scrollHeight;
             }
-            if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-            }
-            setTimeout(typeEffect, delay);
         }
-        typeEffect();
 
-        // Show Chatbot After 5s
-        setTimeout(() => {
-            document.getElementById("loading-text").style.display = "none";
-            document.getElementById("chatbot").style.display = "block";
-        }, 5000);
-
-        // Show Ad after 20s
-        setTimeout(() => {
-            document.getElementById("ad-container").style.display = "block";
-        }, 20000);
-
-        // Close Ad
-        document.getElementById("close-ad").addEventListener('click', () => {
-            document.getElementById("ad-container").style.display = "none";
+        sendBtn.addEventListener('click', sendMessage);
+        inputField.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
         });
 
-        // Disable Right-Click
+        // Disable Right-Click & Dev Tools
         document.addEventListener('contextmenu', event => event.preventDefault());
-
-        // Disable Developer Tools
         document.addEventListener('keydown', event => {
             if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && ['I', 'J'].includes(event.key)) || (event.ctrlKey && event.key === 'U')) {
                 event.preventDefault();
