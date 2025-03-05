@@ -6,40 +6,32 @@
     <title>HIRWA AI</title>
     <link rel="icon" href="https://i.postimg.cc/HcVy4k74/Screenshot-2025-02-02-163931.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
         body {
-            background: #030a1a;
+            background: #04122b;
             color: white;
+            font-family: 'Inter', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             text-align: center;
+            margin: 0;
         }
 
         .chat-container {
             width: 360px;
             background: #101c40;
-            border-radius: 12px;
+            border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
         .chat-header {
             display: flex;
             align-items: center;
             justify-content: center;
+            padding-bottom: 10px;
         }
 
         .chat-header img {
@@ -49,27 +41,17 @@
         }
 
         .chat-body {
+            padding: 10px 0;
             max-height: 250px;
             overflow-y: auto;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .chat-body p {
-            background: #1b2b5b;
-            padding: 10px;
-            border-radius: 5px;
-            width: fit-content;
-            max-width: 80%;
         }
 
         .chat-footer {
-            display: flex;
-            gap: 10px;
+            padding-top: 10px;
         }
 
         .message-input {
-            flex: 1;
+            width: 100%;
             padding: 10px;
             border-radius: 5px;
             border: none;
@@ -79,17 +61,14 @@
         }
 
         .send-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
             background: #17b978;
             border: none;
-            padding: 10px;
             border-radius: 5px;
             color: white;
             cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .send-btn:hover {
-            background: #14a16b;
         }
     </style>
 </head>
@@ -101,7 +80,7 @@
             <h2>Hirwa AI</h2>
         </div>
         <div class="chat-body">
-            <p>👋 Welcome to Hirwa AI! How can I assist you today?</p>
+            <p>Welcome to Hirwa AI! How can I assist you today?</p>
         </div>
         <div class="chat-footer">
             <input type="text" class="message-input" placeholder="Type your message...">
@@ -110,30 +89,10 @@
     </div>
 
     <script>
-        const chatBody = document.querySelector('.chat-body');
-        const inputField = document.querySelector('.message-input');
-        const sendBtn = document.querySelector('.send-btn');
-
-        function sendMessage() {
-            let userText = inputField.value.trim();
-            if (userText !== "") {
-                let userMessage = document.createElement("p");
-                userMessage.textContent = userText;
-                userMessage.style.alignSelf = "flex-end";
-                userMessage.style.background = "#17b978";
-                chatBody.appendChild(userMessage);
-                inputField.value = "";
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }
-        }
-
-        sendBtn.addEventListener('click', sendMessage);
-        inputField.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-        // Disable Right-Click & Dev Tools
+        // Disable Right-Click
         document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // Disable Developer Tools
         document.addEventListener('keydown', event => {
             if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && ['I', 'J'].includes(event.key)) || (event.ctrlKey && event.key === 'U')) {
                 event.preventDefault();
